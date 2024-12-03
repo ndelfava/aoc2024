@@ -5,20 +5,21 @@ total = 0
 potentials = []
 dnt = "don't()"
 do = "do()"
-
+dntactive = False
 
 for line in lines:
     for i in range(len(line)):
         if line[i:i+7] == dnt:
-            while line[i:i+4] != do:
-                continue
-            continue
-        elif line[i:i+4] == "mul(":
-            j = i+4
-            while line[j] != ")":
-                j += 1
-            if j-i < 12:
-                potentials.append(line[i+4:j])
+            dntactive = True
+        if line[i:i+4] == do:
+            dntactive = False
+        if not dntactive:
+            if line[i:i+4] == "mul(":
+                j = i+4
+                while line[j] != ")":
+                    j += 1
+                if j-i < 12:
+                    potentials.append(line[i+4:j])
 
 for p in potentials:
     if "," in p:
